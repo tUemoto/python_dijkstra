@@ -4,7 +4,7 @@ import typing
 from pydantic.dataclasses import dataclass
 
 
-@dataclass
+@dataclass(frozen=True)
 class EkimeiT:
     """
     駅名の情報を格納する型
@@ -16,7 +16,7 @@ class EkimeiT:
     shozoku: str  # 所属線名
 
 
-@dataclass
+@dataclass(frozen=True)
 class EkikanT:
     """
     駅間の情報を格納する型
