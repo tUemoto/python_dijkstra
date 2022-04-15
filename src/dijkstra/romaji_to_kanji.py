@@ -15,6 +15,6 @@ def romaji_to_kanji(eki: str, lst: List[EkimeiT]) -> str:
     if len(lst) == 0:
         return ""
     first: EkimeiT = lst.pop(0)
-    if first.get("romaji") == eki:
-        return first.get("kanji")
+    if first.romaji == eki:
+        return first.kanji
     return romaji_to_kanji(eki, lst)
