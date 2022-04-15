@@ -26,7 +26,7 @@ class EkikanT:
     shuten: str  # 終点
     keiyu: str  # 経由線名
     kyori: float  # 距離
-    jikan: float  # 時間
+    jikan: int  # 時間
 
 
 @dataclass
