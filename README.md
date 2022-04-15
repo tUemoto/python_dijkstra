@@ -1,0 +1,2 @@
+# python_dijkstra
+pythonのtype hintingを利用したダイクストラ法の実装
