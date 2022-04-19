@@ -2,7 +2,9 @@ import functools
 from dataclasses import dataclass
 from typing import List, Mapping, Tuple
 
-from src.types.type_dijkstra import EkiT
+from src.consts.metro import GLOBAL_EKIKAN_LIST
+from src.dijkstra.get_ekikan_kyori import get_ekikan_kyori
+from src.types.type_dijkstra import EkikanT, EkiT
 
 
 def saitan_wo_bunri(lst: List[EkiT]) -> Tuple[EkiT, List[EkiT]]:
@@ -39,3 +41,25 @@ def saitan_wo_bunri(lst: List[EkiT]) -> Tuple[EkiT, List[EkiT]]:
         return accumulator
 
     return fold_right(_compare_eki, (lst.pop(), []), lst)
+
+
+def koushin(p: EkiT, v: List[EkiT], ekikanList: List[EkikanT]) -> List[EkiT]:
+    """直前に確定した駅と未確定の駅リストをもとに更新作業を実施し、
+    未確定の駅リストを返却する。
+    Args:
+        p (EkiT): 直前に確定した駅
+        v (List[EkiT]): 未確定の駅のリスト
+        ekikanList (List[EkikanT]): 利用する駅間リストマスタ
+    Returns:
+        List[EkiT]: 更新済みの未確定の駅リスト
+    """
+
+    def _update_eki(q: EkiT) -> EkiT:
+        # mapの各処理でekikanListを使うので別のオブジェクトにするためにcopyを利用
+        ekikanKyori: float = get_ekikan_kyori(p.namae, q.namae, ekikanList.copy())
+        if ekikanKyori + p.saitan_kyori < q.saitan_kyori:
+            p.temae_list.insert(0, q.namae)
+            return EkiT(q.namae, float(ekikanKyori + p.saitan_kyori), p.temae_list)
+        return q
+
+    return list(map(_update_eki, v))
